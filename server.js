@@ -33,8 +33,15 @@ app.get('/', (req, res) => {
 app.use(express.json());
 
 // Socket Event
-io.on('connection', () => {
-  console.log('New WebSocket connection');
+io.on('connection', socket => {
+  console.log(`New WebSocket connection`);
+  socket.emit('FromNoelBE', {
+    message: 'hello from noel',
+  });
+
+  socket.on('sendMessage', message => {
+    io.emit('message', { message });
+  });
 });
 
 // Dev loggin middleware
