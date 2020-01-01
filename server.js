@@ -16,18 +16,26 @@ connectDB();
 // socket();
 
 // Route files
-const bootcamps = require('./routes/bootcamps');
+const communities = require('./routes/communities');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Mount routers
-app.use('/api/v1/bootcamps', bootcamps);
+// Server headers
 
-app.get('/', (req, res) => {
-  res.send(`Hello world`);
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  console.log('running');
+  next();
 });
+
+// Mount routers
+app.use('/api/v1/communities', communities);
 
 // Body parser
 app.use(express.json());

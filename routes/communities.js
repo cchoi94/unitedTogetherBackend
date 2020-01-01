@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getBootcamp,
-  getBootcamps,
-  createBootcamp,
-  updateBootcamp,
-  deleteBootcamp,
-} = require('../controllers/bootcamps');
+  getCommunity,
+  getCommunities,
+  createCommunity,
+  // updateBootcamp,
+  // deleteBootcamp,
+} = require('../controllers/communities');
 
 // Include other resouce routers
 // const courseRouter = require('./courses');
@@ -16,13 +16,11 @@ const {
 
 router
   .route('/')
-  .get(getBootcamps)
-  .post(createBootcamp);
+  .get(getCommunities)
+  .post(createCommunity);
 
-router
-  .route('/:id')
-  .get(getBootcamp)
-  .put(updateBootcamp)
-  .delete(deleteBootcamp);
+router.route('/:id').get(getCommunity);
+// .put(updateBootcamp)
+// .delete(deleteBootcamp);
 
 module.exports = router;
