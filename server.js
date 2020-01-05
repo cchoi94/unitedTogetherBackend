@@ -1,10 +1,9 @@
-const http = require('http');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
-const socketio = require('socket.io');
 
 // Load env vars
 dotenv.config({ path: './config/config.env' });
@@ -19,8 +18,6 @@ connectDB();
 const communities = require('./routes/communities');
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
 
 // Server headers
 
@@ -34,32 +31,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Mount routers
-app.use('/api/v1/communities', communities);
-
 // Body parser
 app.use(express.json());
-
-// Socket Event
-io.on('connection', socket => {
-  console.log(`New WebSocket connection`);
-  socket.emit('FromNoelBE', {
-    message: 'hello from noel',
-  });
-
-  socket.on('sendMessage', message => {
-    io.emit('message', { message });
-  });
-});
 
 // Dev loggin middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Mount routers
+app.use('/api/v1/communities', communities);
+
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 
-server.listen(
+const server = app.listen(
   PORT,
   console.log(
     `server running in ${process.env.NODE_ENV} with port ${PORT}`.yellow.bold

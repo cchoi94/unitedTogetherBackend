@@ -112,7 +112,7 @@ exports.getCommunity = async (req, res, next) => {
 exports.createCommunity = async (req, res, next) => {
   try {
     const community = await Community.create(req.body);
-
+    console.log('req body ' + req.body);
     res.status(201).json({
       success: true,
       data: community,
