@@ -11,11 +11,9 @@ dotenv.config({ path: './config/config.env' });
 // Connect DB
 connectDB();
 
-// Connect Sockets
-// socket();
-
 // Route files
-const communities = require('./routes/communities');
+const payments = require('./routes/payments');
+const donations = require('./routes/donations');
 
 const app = express();
 
@@ -40,7 +38,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Mount routers
-app.use('/api/v1/communities', communities);
+app.use('/api/v1/payments', payments);
+app.use('/api/v1/donations', donations);
 
 app.use(errorHandler);
 
